@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: specimen
+    description: <http://omop-erd.surge.sh/omop_cdm/tables/SPECIMEN.html>
+    columns:
+      - name: specimen_id
+        description: A unique identifier for each specimen.
+        tests:
+          - not_null
+          - unique
+      - name: person_id
+        description: A foreign key identifier to the Person for whom the Specimen is recorded.
+        tests:
+          - not_null
+      - name: specimen_concept_id
+        description: A foreign key referring to a Standard Concept identifier in the Standardized Vocabularies for the Specimen.
+        tests:
+          - not_null
+      - name: specimen_type_concept_id
+        description: A foreign key referring to the Concept identifier in the Standardized Vocabularies reflecting the system of record from which the Specimen was represented in the source data.
+        tests:
+          - not_null
+      - name: specimen_date
+        description: The date the specimen was obtained from the Person.
+        tests:
+          - not_null
+      - name: specimen_datetime
+        description: The date and time on the date when the Specimen was obtained from the person.
+      - name: quantity
+        description: The amount of specimen collection from the person during the sampling procedure.
+      - name: unit_concept_id
+        description: A foreign key to a Standard Concept identifier for the Unit associated with the numeric quantity of the Specimen collection.
+      - name: anatomic_site_concept_id
+        description: A foreign key to a Standard Concept identifier for the anatomic location of specimen collection.
+      - name: disease_status_concept_id
+        description: A foreign key to a Standard Concept identifier for the Disease Status of specimen collection.
+      - name: specimen_source_id
+        description: The Specimen identifier as it appears in the source data.
+      - name: specimen_source_value
+        description: The Specimen value as it appears in the source data. This value is mapped to a Standard Concept in the Standardized Vocabularies and the original code is, stored here for reference.
+      - name: unit_source_value
+        description: The information about the Unit as detailed in the source.
+      - name: anatomic_site_source_value
+        description: The information about the anatomic site as detailed in the source.
+      - name: disease_status_source_value
+        description: The date the specimen was obtained from the Person.

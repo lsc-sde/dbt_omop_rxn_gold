@@ -1,0 +1,10 @@
+black==24.2.0
+# Optional if running into SSL errors when running dbt deps
+# pip-system-certs
+dbt-core==1.7.3
+dbt-sqlserver==1.7.2
+pre-commit==3.6.1
+
+# For development
+sqlfluff==2.3.5
+sqlfluff-templater-dbt==2.3.5

@@ -1,0 +1,36 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"dbt.queryLimit": 500,
+		"yaml.schemas": {
+			"https://raw.githubusercontent.com/dbt-labs/dbt-jsonschema/main/schemas/dbt_yml_files.json": [
+				"/**/*.yml",
+				"!profiles.yml",
+				"!dbt_project.yml",
+				"!packages.yml",
+				"!selectors.yml",
+				"!profile_template.yml"
+			],
+			"https://raw.githubusercontent.com/dbt-labs/dbt-jsonschema/main/schemas/dbt_project.json": [
+				"dbt_project.yml"
+			],
+			"https://raw.githubusercontent.com/dbt-labs/dbt-jsonschema/main/schemas/selectors.json": [
+				"selectors.yml"
+			],
+			"https://raw.githubusercontent.com/dbt-labs/dbt-jsonschema/main/schemas/packages.json": [
+				"packages.yml"
+			]
+		},
+		"python.envFile": "${workspaceFolder}\\.databricks\\.databricks.env",
+		"databricks.python.envFile": "${workspaceFolder}/.env",
+		"jupyter.interactiveWindow.cellMarker.codeRegex": "^# COMMAND ----------|^# Databricks notebook source|^(#\\s*%%|#\\s*\\<codecell\\>|#\\s*In\\[\\d*?\\]|#\\s*In\\[ \\])",
+		"jupyter.interactiveWindow.cellMarker.default": "# COMMAND ----------",
+		"dbt.queryTemplate": "select top {limit} * from ({query}) as query ",
+		"dbt.enableNewDocsPanel": true,
+		"dbt.enableNewLineagePanel": true
+	}
+}

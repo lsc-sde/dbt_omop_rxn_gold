@@ -1,0 +1,58 @@
+version: 2
+
+models:
+
+  - name: observation
+    description: <http://omop-erd.surge.sh/omop_cdm/tables/OBSERVATION.html>
+    columns:
+      - name: observation_id
+        description: A unique identifier for each observation.
+        tests:
+          - not_null
+          - unique
+      - name: person_id
+        description: A foreign key identifier to the Person about whom the observation was recorded. The demographic details of that Person are stored in the PERSON table.
+        tests:
+          - not_null
+      - name: observation_concept_id
+        description: A foreign key to the standard observation concept identifier in the Standardized Vocabularies.
+        tests:
+          - not_null
+      - name: observation_date
+        description: The date of the observation.
+        tests:
+          - not_null
+      - name: observation_datetime
+        description: The date and time of the observation.
+      - name: observation_type_concept_id
+        description: A foreign key to the predefined concept identifier in the Standardized Vocabularies reflecting the type of the observation.
+        tests:
+          - not_null
+      - name: value_as_number
+        description: The observation result stored as a number. This is applicable to observations where the result is expressed as a numeric value.
+      - name: value_as_string
+        description: The observation result stored as a string. This is applicable to observations where the result is expressed as verbatim text.
+      - name: value_as_concept_id
+        description: |
+          A foreign key to an observation result stored as a Concept ID.
+          This is applicable to observations where the result can be expressed as a Standard Concept from the Standardized Vocabularies (e.g., positive/negative, present/absent, low/high, etc.).
+      - name: qualifier_concept_id
+        description: A foreign key to a Standard Concept ID for a qualifier (e.g., severity of drug-drug interaction alert)
+      - name: unit_concept_id
+        description: A foreign key to a Standard Concept ID of measurement units in the Standardized Vocabularies.
+      - name: provider_id
+        description: A foreign key to the provider in the PROVIDER table who was responsible for making the observation.
+      - name: visit_occurrence_id
+        description: A foreign key to the visit in the VISIT_OCCURRENCE table during which the observation was recorded.
+      - name: observation_source_value
+        description: |
+          The observation code as it appears in the source data.
+          This code is mapped to a Standard Concept in the Standardized Vocabularies and the original code is, stored here for reference.
+      - name: observation_source_concept_id
+        description: A foreign key to a Concept that refers to the code used in the source.
+      - name: unit_source_value
+        description: |
+          The source code for the unit as it appears in the source data.
+          This code is mapped to a standard unit concept in the Standardized Vocabularies and the original code is, stored here for reference.
+      - name: qualifier_source_value
+        description: The source value associated with a qualifier to characterize the observation

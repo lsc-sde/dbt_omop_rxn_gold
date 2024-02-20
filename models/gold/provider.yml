@@ -1,0 +1,34 @@
+version: 2
+models:
+  - name: provider
+    description: <http://omop-erd.surge.sh/omop_cdm/tables/PROVIDER.html>
+    columns:
+      - name: provider_id
+        description: A unique identifier for each Provider.
+        tests:
+          - not_null
+          - unique
+      - name: provider_name
+        description: A description of the Provider.
+      - name: npi
+        description: The National Provider Identifier (NPI) of the provider.
+      - name: dea
+        description: The Drug Enforcement Administration (DEA) number of the provider.
+      - name: specialty_concept_id
+        description: A foreign key to a Standard Specialty Concept ID in the Standardized Vocabularies.
+      - name: care_site_id
+        description: A foreign key to the main Care Site where the provider is practicing.
+      - name: year_of_birth
+        description: The year of birth of the Provider.
+      - name: gender_concept_id
+        description: The gender of the Provider.
+      - name: provider_source_value
+        description: The identifier used for the Provider in the source data, stored here for reference.
+      - name: specialty_source_value
+        description: The source code for the Provider specialty as it appears in the source data, stored here for reference.
+      - name: specialty_source_concept_id
+        description: A foreign key to a Concept that refers to the code used in the source.
+      - name: gender_source_value
+        description: The gender code for the Provider as it appears in the source data, stored here for reference.
+      - name: gender_source_concept_id
+        description: A foreign key to a Concept that refers to the code used in the source.

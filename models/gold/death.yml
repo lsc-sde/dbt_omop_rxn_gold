@@ -1,0 +1,36 @@
+version: 2
+
+models:
+
+  - name: death
+    description: <http://omop-erd.surge.sh/omop_cdm/tables/DEATH.html>
+    columns:
+      - name: person_id
+        description: 	A foreign key identifier to the deceased person. The demographic details of that person are stored in the person table.
+        tests:
+          - not_null
+          - unique
+      - name: death_date
+        description: |
+          The date the person was deceased.
+          If the precise date including day or month is not known or not allowed, December is used as the default month, and the last day of the month the default day.
+        tests:
+          - not_null
+      - name: death_datetime
+        description: |
+          The date and time the person was deceased.
+          If the precise date including day or month is not known or not allowed, December is used as the default month, and the last day of the month the default day.
+      - name: death_type_concept_id
+        description: 	A foreign key referring to the predefined concept identifier in the Standardized Vocabularies reflecting how the death was represented in the source data.
+        tests:
+          - not_null
+      - name: cause_concept_id
+        description: 	A foreign key referring to a standard concept identifier in the Standardized Vocabularies for conditions.
+      - name: cause_source_value
+        description: |
+          The source code for the cause of death as it appears in the source data.
+          This code is mapped to a standard concept in the Standardized Vocabularies and the original code is, stored here for reference.
+      - name: cause_source_concept_id
+        description: |
+          A foreign key to the concept that refers to the code used in the source.
+          Note, this variable name is abbreviated to ensure it will be allowable across database platforms.

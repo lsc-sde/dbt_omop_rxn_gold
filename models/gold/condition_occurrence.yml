@@ -1,0 +1,103 @@
+version: 2
+models:
+  - name: condition_occurrence
+    description: <http://omop-erd.surge.sh/omop_cdm/tables/CARE_SITE.html>
+    columns:
+      - name: condition_occurrence_id
+        description: 	A unique identifier for each Condition Occurrence event.
+        tests:
+          - not_null
+          - unique
+      - name: person_id
+        description: A foreign key identifier to the Person who is experiencing the condition. The demographic details of that Person are stored in the PERSON table.
+        tests:
+          - not_null
+          - relationships:
+              name: ag_fk__condition_occurrence_person_id
+              to: ref('person')
+              field: person_id
+      - name: condition_concept_id
+        description: A foreign key that refers to a Standard Condition Concept identifier in the Standardized Vocabularies.
+        tests:
+          - not_null
+          - relationships:
+              name: ag_fk__condition_occurrence_condition_concept_id
+              to: ref('concept')
+              field: concept_id
+      - name: condition_start_date
+        description: The date when the instance of the Condition is recorded.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+                name: ag_le_now__condition_occurrence_condition_start_date
+                expression: "<= CURRENT_TIMESTAMP()"
+          - linked_model_date_comparison:
+              name: ag_comp__condition_start_date_ge_birth_datetime
+              other_model: ref('person')
+              other_column: birth_datetime
+              fk: person_id
+              operator: 'ge'
+          - linked_model_date_comparison:
+              name: ag_comp__condition_start_date_le_death_date
+              other_model: ref('death')
+              other_column: death_date
+              fk: person_id
+              operator: 'le'
+      - name: condition_start_datetime
+        description: The date and time when the instance of the Condition is recorded.
+      - name: condition_end_date
+        description: The date when the instance of the Condition is considered to have ended.
+      - name: condition_end_datetime
+        description: The date and time when the instance of the Condition is recorded.
+      - name: condition_type_concept_id
+        description: |
+          A foreign key to the predefined Concept identifier in the Standardized Vocabularies reflecting the source data from which the condition was recorded,
+          the level of standardization, and the type of occurrence
+        tests:
+          - not_null
+          - relationships:
+              name: ag_fk__condition_occurrence_condition_type_concept_id
+              to: ref('concept')
+              field: concept_id
+      - name: stop_reason
+        description: The reason that the condition was no longer present, as indicated in the source data.
+      - name: provider_id
+        description: A foreign key to the Provider in the PROVIDER table who was responsible for capturing (diagnosing) the Condition.
+        tests:
+          - relationships:
+              name: ag_fk__condition_occurrence_provider_id
+              to: ref('provider')
+              field: provider_id
+      - name: visit_occurrence_id
+        description: A foreign key to the visit in the VISIT table during which the Condition was determined (diagnosed).
+        tests:
+          - relationships:
+              name: ag_fk__condition_occurrence_visit_occurrence_id
+              to: ref('visit_occurrence')
+              field: visit_occurrence_id
+      - name: visit_detail_id
+        tests:
+          - relationships:
+              name: ag_fk__condition_occurrence_visit_detail_id
+              to: ref('visit_detail')
+              field: visit_detail_id
+      - name: condition_status_concept_id
+        description: A foreign key to the predefined concept in the standard vocabulary reflecting the condition status.
+        tests:
+          - relationships:
+              name: ag_fk__condition_occurrence_condition_status_concept_id
+              to: ref('concept')
+              field: concept_id
+      - name: condition_source_concept_id
+        description: A foreign key to a Condition Concept that refers to the code used in the source.
+        tests:
+          - relationships:
+              name: ag_fk__condition_occurrence_condition_source_concept_id
+              to: ref('concept')
+              field: concept_id
+      - name: condition_source_value
+        description: |
+          The source code for the condition as it appears in the source data.
+          This code is mapped to a standard condition concept in the Standardized Vocabularies and the original code is stored here for reference.
+      - name: condition_status_source_value
+        description: The date when the instance of the Condition is considered to have ended.

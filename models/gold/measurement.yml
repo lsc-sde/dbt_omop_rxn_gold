@@ -1,0 +1,59 @@
+version: 2
+
+models:
+  - name: measurement
+    description: <http://omop-erd.surge.sh/omop_cdm/tables/MEASUREMENT.html>
+    columns:
+      - name: measurement_id
+        description: A unique identifier for each Measurement.
+        tests:
+          - not_null
+          - unique
+      - name: person_id
+        tests:
+          - not_null
+        description: A foreign key identifier to the Person about whom the measurement was recorded. The demographic details of that Person are stored in the PERSON table.
+      - name: measurement_concept_id
+        description: A foreign key to the standard measurement concept identifier in the Standardized Vocabularies.
+        tests:
+          - not_null
+      - name: measurement_date
+        description: The date of the Measurement.
+        tests:
+          - not_null
+      - name: measurement_datetime
+        description: |
+          The date and time of the Measurement. (Some database systems don't have a datatype of time.
+          To accomodate all temporal analyses, datatype datetime can be used (combining measurement_date and measurement_time)Relevant Forum Discussion
+      - name: measurement_type_concept_id
+        description: A foreign key to the predefined Concept in the Standardized Vocabularies reflecting the provenance from where the Measurement record was recorded.
+      - name: operator_concept_id
+        description: |
+          A foreign key identifier to the predefined Concept in the Standardized Vocabularies reflecting the mathematical operator that is applied to the value_as_number.
+          Operators are <, ≤, =, ≥, >.
+      - name: value_as_number
+        description: A Measurement result where the result is expressed as a numeric value.
+      - name: value_as_concept_id
+        description: A foreign key to a Measurement result represented as a Concept from the Standardized Vocabularies (e.g., positive/negative, present/absent, low/high, etc.).
+      - name: unit_concept_id
+        description: A foreign key to a Standard Concept ID of Measurement Units in the Standardized Vocabularies.
+      - name: range_low
+        description: The lower limit of the normal range of the Measurement result. The lower range is assumed to be of the same unit of measure as the Measurement value.
+      - name: range_high
+        description: The upper limit of the normal range of the Measurement. The upper range is assumed to be of the same unit of measure as the Measurement value.
+      - name: provider_id
+        description: A foreign key to the provider in the PROVIDER table who was responsible for initiating or obtaining the measurement.
+      - name: visit_occurrence_id
+        description: A foreign key to the Visit in the VISIT_OCCURRENCE table during which the Measurement was recorded.
+      - name: measurement_source_value
+        description: |
+          The Measurement name as it appears in the source data.
+          This code is mapped to a Standard Concept in the Standardized Vocabularies and the original code is stored here for reference.
+      - name: measurement_source_concept_id
+        description: A foreign key to a Concept in the Standard Vocabularies that refers to the code used in the source.
+      - name: unit_source_value
+        description: |
+          The source code for the unit as it appears in the source data.
+          This code is mapped to a standard unit concept in the Standardized Vocabularies and the original code is stored here for reference.
+      - name: value_source_value
+        description: The source value associated with the content of the value_as_number or value_as_concept_id as stored in the source data.

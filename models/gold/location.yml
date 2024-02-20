@@ -1,0 +1,26 @@
+version: 2
+
+models:
+
+  - name: location
+    description: <http://omop-erd.surge.sh/omop_cdm/tables/LOCATION.html>
+    columns:
+      - name: location_id
+        description: A unique identifier for each geographic location.
+        tests:
+          - not_null
+          - unique
+      - name: address_1
+        description: The address field 1, typically used for the street address, as it appears in the source data.
+      - name: address_2
+        description: The address field 2, typically used for additional detail such as buildings, suites, floors, as it appears in the source data.
+      - name: city
+        description: The city field as it appears in the source data.
+      - name: state
+        description: The state field as it appears in the source data.
+      - name: zip
+        description: The zip or postal code.
+      - name: county
+        description: The county.
+      - name: location_source_value
+        description: The verbatim information that is used to uniquely identify the location as it appears in the source data.

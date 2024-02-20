@@ -1,0 +1,54 @@
+version: 2
+
+models:
+
+  - name: visit_occurrence
+    description: <http://omop-erd.surge.sh/omop_cdm/tables/VISIT_OCCURRENCE.html>
+    columns:
+      - name: visit_occurrence_id
+        description: A unique identifier for each Person's visit or encounter at a healthcare provider.
+        tests:
+          - not_null
+          - unique
+      - name: person_id
+        description: A foreign key identifier to the Person for whom the visit is recorded. The demographic details of that Person are stored in the PERSON table.
+        tests:
+          - not_null
+      - name: visit_concept_id
+        description: A foreign key that refers to a visit Concept identifier in the Standardized Vocabularies.
+        tests:
+          - not_null
+      - name: visit_start_date
+        description: The start date of the visit.
+        tests:
+          - not_null
+      - name: visit_start_datetime
+        description: The date and time of the visit started.
+      - name: visit_end_date
+        description: The end date of the visit. If this is a one-day visit the end date should match the start date.
+        tests:
+          - not_null
+      - name: visit_end_datetime
+        description: The date and time of the visit end.
+      - name: visit_type_concept_id
+        description: A foreign key to the predefined Concept identifier in the Standardized Vocabularies reflecting the type of source data from which the visit record is derived.
+        tests:
+          - not_null
+      - name: provider_id
+        description: A foreign key to the provider in the provider table who was associated with the visit.
+      - name: care_site_id
+        description: A foreign key to the care site in the care site table that was visited.
+      - name: admitting_source_concept_id
+        description: A foreign key to the predefined concept in the Place of Service Vocabulary reflecting the admitting source for a visit.
+      - name: discharge_to_concept_id
+        description: A foreign key to the predefined concept in the Place of Service Vocabulary reflecting the discharge disposition (destination) for a visit.
+      - name: preceding_visit_occurrence_id
+        description: A foreign key to the VISIT_OCCURRENCE table record of the visit immediately preceding this visit.
+      - name: visit_source_value
+        description: The source code for the visit as it appears in the source data.
+      - name: visit_source_concept_id
+        description: A foreign key to a Concept that refers to the code used in the source.
+      - name: admitting_source_value
+        description: The source code for the admitting source as it appears in the source data.
+      - name: discharge_to_source_value
+        description: The source code for the discharge disposition as it appears in the source data.
