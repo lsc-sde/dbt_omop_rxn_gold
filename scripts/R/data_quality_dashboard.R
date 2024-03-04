@@ -5,7 +5,7 @@ library(DataQualityDashboard)
 library(dotenv)
 library(here)
 
-dotenv::load_dot_env(here("../../.env"))
+dotenv::load_dot_env(here(".env.sqlserver"))
 
 connectionString <- Sys.getenv("connectionString")
 dbms <-  Sys.getenv("dbms")
@@ -104,8 +104,8 @@ checkNames <- c(
   "plausibleTemporalAfter",
   "plausibleDuringLife",
   "withinVisitDates",
-  "plausibleGender",
-  "plausibleUnitConceptIds"
+  "plausibleGender"
+ # "plausibleUnitConceptIds"
 ) # Names can be found in inst/csv/OMOP_CDM_v5.3_Check_Descriptions.csv
 
 checkNames <- c()
@@ -141,6 +141,7 @@ DataQualityDashboard::executeDqChecks(connectionDetails = connectionDetails,
                                       checkLevels = checkLevels,
                                       tablesToExclude = tablesToExclude,
                                       checkNames = checkNames,
+                                      vocabDatabaseSchema = 'vocab'
                                       )
 
 # inspect logs ----------------------------------------------------------------------------

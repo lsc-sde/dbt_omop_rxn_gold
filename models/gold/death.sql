@@ -7,6 +7,7 @@ select
   d.cause_source_value,
   d.cause_source_concept_id
 from {{ source('omop', 'death') }} as d
-inner join {{ ref('person') }} as p
+inner join {{ source('omop', 'person') }}  as p
   on d.person_id = p.person_id
-where d.death_date >= to_date(p.birth_datetime)
+where d.death_date >= cast(p.birth_datetime as date)
+and d.death_date <= getdate()

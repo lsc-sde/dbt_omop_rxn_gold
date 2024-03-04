@@ -21,5 +21,5 @@ select
 from {{ source('omop', 'device_exposure') }} as de
 inner join {{ ref('person') }} as p
   on de.person_id = p.person_id
-where de.device_exposure_start_date >= to_date(p.birth_datetime)
+where de.device_exposure_start_date >= cast(p.birth_datetime as date)
 -- ToDo: Add a clause to exclude events after death

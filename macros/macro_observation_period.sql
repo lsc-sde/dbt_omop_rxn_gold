@@ -31,8 +31,8 @@ cte_2 as (
 cte as (
   select
     distinct person_id,
-    date_trunc('MONTH', observation_period_start_date)  as observation_period_start_date,
-    last_day(observation_period_end_date)  as observation_period_end_date
+    DATEADD(MONTH, DATEDIFF(MONTH, 0, observation_period_start_date), 0) as observation_period_start_date,
+    EOMONTH(observation_period_end_date)  as observation_period_end_date
   from
     cte_2
 )

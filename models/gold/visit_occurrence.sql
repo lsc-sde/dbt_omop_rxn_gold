@@ -16,9 +16,4 @@ select
   vo.discharged_to_concept_id,
   vo.discharged_to_source_value,
   vo.preceding_visit_occurrence_id
-from {{ source('omop', 'visit_occurrence') }} as vo
-inner join {{ ref('person') }} as p
-  on vo.person_id = p.person_id
-where
-  vo.visit_start_date >= to_date(p.birth_datetime)
--- ToDo: Add a clause to exclude visits after death
+from {{ ref('stg__visit_occurrence') }} as vo

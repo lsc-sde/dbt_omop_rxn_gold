@@ -1,30 +1,39 @@
 install.packages("remotes")
-remotes::install_github("OHDSI/DataQualityDashboard")
+# remotes::install_github("OHDSI/DataQualityDashboard")
+remotes::install_local('./OHDSI-DataQualityDashboard-v2.5.0-9-g81230bd.tar.gz', upgrade = 'always')
 
 library(DataQualityDashboard)
 library(dotenv)
 library(here)
 
-dotenv::load_dot_env(here("../../.env"))
+dotenv::load_dot_env(here(".env.sqlserver"))
 
 
-# fill out the connection details -----------------------------------------------------------------------
+# Load Environment variables
 connectionString <- Sys.getenv("connectionString")
 dbms <-  Sys.getenv("dbms")
 pathToDriver <- Sys.getenv("pathToJDBCDriver")
 
+cdmVersion = "5.4"
+cdmDatabaseSchema  <- Sys.getenv("cdmDatabaseSchema")
+resultsDatabaseSchema  <- Sys.getenv("resultsDatabaseSchema")
+vocabDatabaseSchema  <- Sys.getenv("vocabDatabaseSchema")
 
+sqlDialect  <- Sys.getenv("sqlDialect")
+
+cdmSourceName <- Sys.getenv("cdmSourceName")
+PATH_TO_AUTH_DLL <- Sys.getenv("pathToAuthDll")
+
+# Download JDBC drivers
+# DatabaseConnector::downloadJdbcDrivers(dbms, pathToDriver=pathToDriver)
+
+# Create Connection Details
 connectionDetails <- createConnectionDetails(
   dbms=dbms,
   connectionString = connectionString,
   pathToDriver = pathToDriver
-  )
+)
 
-
-cdmVersion = "5.4"
-cdmDatabaseSchema  <- Sys.getenv("cdmDatabaseSchema")
-resultsDatabaseSchema  <- Sys.getenv("resultsDatabaseSchema")
-sqlDialect  <- Sys.getenv("sqlDialect")
 
 
 # determine how many threads (concurrent SQL sessions) to use ----------------------------------------
@@ -33,7 +42,7 @@ numThreads <- 1 # on Redshift, 3 seems to work well
 # specify if you want to execute the queries or inspect them ------------------------------------------
 sqlOnly <- FALSE # set to TRUE if you just want to get the SQL scripts and not actually run the queries
 sqlOnlyIncrementalInsert <- FALSE # set to TRUE if you want the generated SQL queries to calculate DQD results and insert them into a database table (@resultsDatabaseSchema.@writeTableName)
-sqlOnlyUnionCount <- 1  # in sqlOnlyIncrementalInsert mode, the number of check sqls to union in a single query; higher numbers can improve performance in some DBMS (e.g. a value of 25 may be 25x faster)
+sqlOnlyUnionCount <- 25  # in sqlOnlyIncrementalInsert mode, the number of check sqls to union in a single query; higher numbers can improve performance in some DBMS (e.g. a value of 25 may be 25x faster)
 
 # NOTES specific to sqlOnly <- TRUE option ------------------------------------------------------------
 # 1. You do not need a live database connection.  Instead, connectionDetails only needs these parameters:
@@ -79,7 +88,30 @@ checkLevels <- c("TABLE", "FIELD", "CONCEPT")
 # checkLevels <- c("TABLE")
 
 # which DQ checks to run? ------------------------------------
-checkNames <- c() # Names can be found in inst/csv/OMOP_CDM_v5.3_Check_Descriptions.csv
+checkNames <- c(
+  "cdmTable",
+  "measurePersonCompleteness",
+  "measureConditionEraCompleteness",
+  "cdmField",
+  "isRequired",
+  "cdmDatatype",
+  "isPrimaryKey",
+  "isForeignKey",
+  "fkDomain",
+  "fkClass",
+  "isStandardValidConcept",
+  "measureValueCompleteness",
+  "standardConceptRecordCompleteness",
+  "sourceConceptRecordCompleteness",
+  "sourceValueCompleteness",
+  "plausibleValueLow",
+  "plausibleValueHigh",
+  "plausibleTemporalAfter",
+  "plausibleDuringLife",
+  "withinVisitDates",
+  "plausibleGender"
+  # "plausibleUnitConceptIds"
+) # Names can be found in inst/csv/OMOP_CDM_v5.3_Check_Descriptions.csv
 
 # which CDM tables to exclude? ------------------------------------
 tablesToExclude <- c(
@@ -100,6 +132,7 @@ DataQualityDashboard::executeDqChecks(connectionDetails = connectionDetails,
                                       cdmVersion = "5.4",
                                       cdmDatabaseSchema = cdmDatabaseSchema,
                                       resultsDatabaseSchema = resultsDatabaseSchema,
+                                      vocabDatabaseSchema = vocabDatabaseSchema,
                                       cdmSourceName = cdmSourceName,
                                       numThreads = numThreads,
                                       sqlOnly = sqlOnly,

@@ -17,4 +17,15 @@ select
   p.race_source_concept_id,
   p.ethnicity_source_value,
   p.ethnicity_source_concept_id
-from {{ ref('stg__person') }} as p
+from {{ source('omop', 'person') }} as p
+where
+-- patients should have atleast one fact
+  exists (
+    select 1
+    from {{ ref('stg__persons_with_facts') }} as op
+    where op.person_id = p.person_id
+  )
+  -- patients cannot be born in the future
+  and p.birth_datetime <= {{ dbt.current_timestamp() }}
+  -- gender concept cannot be null
+  and p.gender_concept_id is not null

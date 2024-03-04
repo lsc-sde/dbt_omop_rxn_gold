@@ -18,4 +18,15 @@ select
   vd.preceding_visit_detail_id,
   vd.parent_visit_detail_id,
   vd.visit_occurrence_id
-from {{ ref('stg__visit_detail') }} as vd
+from {{ source('omop', 'visit_detail') }} as vd
+-- keep only visit detail for clean visit occurrences
+where
+  exists (
+    select 1
+    from {{ ref('stg__visit_occurrence') }} as vo
+    where vo.visit_occurrence_id = vd.visit_occurrence_id
+  )
+  and vd.visit_detail_end_date is not null
+  and vd.visit_detail_end_datetime is not null
+  and vd.visit_detail_end_date < {{ dbt.current_timestamp() }}
+  and vd.visit_detail_end_datetime < {{ dbt.current_timestamp() }}

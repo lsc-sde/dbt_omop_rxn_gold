@@ -1,4 +1,4 @@
-{{ get_observation_period ('visit_occurrence', 'visit_start_date', 'visit_end_date') }}
+{{ get_observation_period ('stg__visit_occurrence', 'visit_start_date', 'visit_end_date') }}
 
 select
   person_id,

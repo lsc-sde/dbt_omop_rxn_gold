@@ -2,6 +2,7 @@ version: 2
 
 models:
   - name: care_site
+    identifier: CARE_SITE
     description: <http://omop-erd.surge.sh/omop_cdm/tables/CARE_SITE.html>
     columns:
       - name: care_site_id
