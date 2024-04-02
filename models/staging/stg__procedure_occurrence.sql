@@ -16,3 +16,5 @@ select
   po.procedure_source_concept_id,
   po.modifier_source_value
 from {{ source('omop', 'procedure_occurrence') }} as po
+where po.procedure_date is not null
+
