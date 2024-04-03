@@ -15,12 +15,7 @@ select
   sp.anatomic_site_source_value,
   sp.disease_status_source_value
 from {{ source('omop', 'specimen') }} as sp
-inner join {{ source('omop', 'person') }} as p
+inner join {{ ref('stg__person') }} as p
   on sp.person_id = p.person_id
 where
-  exists (
-    select 1
-    from {{ ref('stg__persons_with_facts') }} as p
-    where p.person_id = sp.person_id
-  )
-  and sp.specimen_date >= cast(p.birth_datetime as date)
+  sp.specimen_date >= cast(p.birth_datetime as date)
