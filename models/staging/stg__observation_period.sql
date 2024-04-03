@@ -9,7 +9,6 @@ https://stackoverflow.com/questions/48425120/merge-overlapping-dates-in-sql-serv
 }}
 
 --noqa
-select
-  *
-  from {{ source('omop', 'observation_period') }}
+select *
+from {{ source('omop', 'observation_period') }}
 --noqa

@@ -16,7 +16,7 @@ select
   co.condition_source_concept_id,
   co.condition_status_source_value
 from {{ source('omop', 'condition_occurrence') }} as co
-inner join {{ source('omop', 'person') }}  as p
+inner join {{ source('omop', 'person') }} as p
   on co.person_id = p.person_id
 where
   co.condition_occurrence_id is not null

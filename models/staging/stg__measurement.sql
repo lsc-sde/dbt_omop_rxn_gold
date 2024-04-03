@@ -26,7 +26,7 @@ select
   m.datasource,
   m.updated_at
 from {{ source('omop', 'measurement') }} as m
-inner join {{ source('omop', 'person') }}  as p
+inner join {{ source('omop', 'person') }} as p
   on m.person_id = p.person_id
 where
   m.measurement_id is not null

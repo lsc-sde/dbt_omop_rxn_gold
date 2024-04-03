@@ -20,5 +20,4 @@ inner join {{ ref('stg__person') }} as p
   on po.person_id = p.person_id
 where
   po.procedure_date >= cast(p.birth_datetime as date)
-and po.procedure_date is not null
-
+  and po.procedure_date is not null

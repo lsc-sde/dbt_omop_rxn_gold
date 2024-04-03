@@ -5,4 +5,4 @@ select
   ce.condition_era_start_date,
   ce.condition_era_end_date,
   ce.condition_occurrence_count
-from {{ ref('stg__condition_era') }} ce
+from {{ ref('stg__condition_era') }} as ce
