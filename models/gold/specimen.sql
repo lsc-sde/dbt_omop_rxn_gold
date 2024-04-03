@@ -14,4 +14,4 @@ select
   s.unit_source_value,
   s.anatomic_site_source_value,
   s.disease_status_source_value
-from {{ source('omop', 'specimen') }} as s
+from {{ ref('stg__specimen') }} as s
