@@ -46,3 +46,7 @@ sources:
       - name: drug_strength
       - name: relationship
       - name: vocabulary
+  - name: ndo
+    schema: prod
+    tables:
+      - name: ext__data_opt_out

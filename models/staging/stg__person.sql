@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized = 'table',
+    )
+}}
+
 select
   p.person_id,
   p.gender_concept_id,
@@ -25,7 +31,13 @@ where
     from {{ ref('stg__persons_with_facts') }} as op
     where op.person_id = p.person_id
   )
+and
+ not exists (
+    select 1
+    from {{ source('ndo', 'ext__data_opt_out') }} as op
+    where op.person_id = p.person_id
+  )
   -- patients cannot be born in the future
   and p.birth_datetime <= {{ dbt.current_timestamp() }}
-  -- gender concept cannot be null
-  and p.gender_concept_id is not null
+  -- gender concept must be female or male
+  and p.gender_concept_id in (8532, 8507)
