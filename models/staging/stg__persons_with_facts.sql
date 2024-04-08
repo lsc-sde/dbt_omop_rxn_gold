@@ -24,6 +24,8 @@ from
     select person_id from {{ source('omop', 'drug_exposure') }}
     union
     select person_id from {{ source('omop', 'device_exposure') }}
+    union
+    select person_id from {{ source('omop', 'visit_occurrence') }}
 
   ) as t
 
