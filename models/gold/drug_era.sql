@@ -6,4 +6,4 @@ select
   de.drug_era_end_date,
   de.drug_exposure_count,
   de.gap_days
-from {{ source('omop', 'drug_era') }} as de
+from {{ ref('stg__drug_era') }} as de

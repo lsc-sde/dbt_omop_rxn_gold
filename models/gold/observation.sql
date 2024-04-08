@@ -23,4 +23,4 @@ select
   o.unique_key,
   o.datasource,
   o.updated_at
-from {{ source('omop', 'observation') }} as o
+from {{ ref('stg__observation') }} as o

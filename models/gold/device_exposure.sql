@@ -18,8 +18,4 @@ select
   de.unit_concept_id,
   de.unit_source_value,
   de.unit_source_concept_id
-from {{ source('omop', 'device_exposure') }} as de
-inner join {{ ref('person') }} as p
-  on de.person_id = p.person_id
-where de.device_exposure_start_date >= cast(p.birth_datetime as date)
--- ToDo: Add a clause to exclude events after death
+from {{ ref('stg__device_exposure') }} as de

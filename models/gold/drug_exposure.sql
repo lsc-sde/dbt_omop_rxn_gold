@@ -22,4 +22,4 @@ select
   de.drug_source_concept_id,
   de.route_source_value,
   de.dose_unit_source_value
-from {{ source('omop', 'drug_exposure') }} as de
+from {{ ref('stg__drug_exposure') }} as de

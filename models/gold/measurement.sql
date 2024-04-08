@@ -25,4 +25,4 @@ select
   m.unique_key,
   m.datasource,
   m.updated_at
-from {{ source('omop', 'measurement') }} as m
+from {{ ref('stg__measurement') }} as m
