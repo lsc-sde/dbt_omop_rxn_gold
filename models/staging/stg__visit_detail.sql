@@ -33,7 +33,10 @@ where
     where vo.visit_occurrence_id = vd.visit_occurrence_id
   )
   and vd.visit_detail_start_date >= cast(p.birth_datetime as date)
-  and (vd.visit_detail_start_datetime >= p.birth_datetime or vd.visit_detail_start_datetime is null)
+  and (
+    vd.visit_detail_start_datetime >= p.birth_datetime
+    or vd.visit_detail_start_datetime is null
+  )
   and (vd.visit_detail_start_date <= d.death_date or d.death_date is null)
   and vd.visit_detail_end_date is not null
   and vd.visit_detail_end_datetime is not null

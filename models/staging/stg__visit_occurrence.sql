@@ -69,7 +69,10 @@ left join {{ ref('stg__death') }} as d
   on vo.person_id = d.person_id
 where
   vo.visit_start_date >= cast(p.birth_datetime as date)
-  and (vo.visit_start_datetime >= p.birth_datetime or vo.visit_start_datetime is null)
+  and (
+    vo.visit_start_datetime >= p.birth_datetime
+    or vo.visit_start_datetime is null
+  )
   and (vo.visit_start_date <= d.death_date or d.death_date is null)
   and vo.visit_end_date is not null
   and vo.visit_end_datetime is not null
