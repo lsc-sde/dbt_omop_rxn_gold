@@ -24,3 +24,13 @@ select
   o.datasource,
   o.updated_at
 from {{ source('omop', 'observation') }} as o
+inner join {{ ref('stg__person') }} as p
+  on o.person_id = p.person_id
+inner join {{ ref('stg__visit_occurrence') }} as vo
+  on o.visit_occurrence_id = vo.visit_occurrence_id
+inner join {{ source('vocab', 'concept') }} c
+  on o.observation_concept_id = c.concept_id
+  and c.invalid_reason is null
+where
+  o.observation_date >= cast(p.birth_datetime as date)
+  and o.observation_date is not null

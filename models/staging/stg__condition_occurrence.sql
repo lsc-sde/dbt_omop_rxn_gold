@@ -16,8 +16,13 @@ select
   co.condition_source_concept_id,
   co.condition_status_source_value
 from {{ source('omop', 'condition_occurrence') }} as co
-inner join {{ source('omop', 'person') }} as p
+inner join {{ ref('stg__person') }} as p
   on co.person_id = p.person_id
+inner join {{ ref('stg__visit_occurrence') }} as vo
+  on co.visit_occurrence_id = vo.visit_occurrence_id
+inner join {{ source('vocab', 'concept') }} c
+  on co.condition_concept_id = c.concept_id
+  and c.standard_concept is not null
 where
   co.condition_occurrence_id is not null
   and co.condition_concept_id is not null

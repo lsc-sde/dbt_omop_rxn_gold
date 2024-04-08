@@ -26,11 +26,10 @@ select
   m.datasource,
   m.updated_at
 from {{ source('omop', 'measurement') }} as m
-inner join {{ source('omop', 'person') }} as p
+inner join {{ ref('stg__person') }} as p
   on m.person_id = p.person_id
+inner join {{ ref('stg__visit_occurrence') }} as vo
+  on m.visit_occurrence_id = vo.visit_occurrence_id
 where
-  m.measurement_id is not null
-  and m.measurement_concept_id is not null
-  and m.measurement_date >= cast(p.birth_datetime as date)
-  and m.measurement_date <= {{ dbt.current_timestamp() }}
--- ToDo: Add a clause to exclude events after death
+  m.measurement_date >= cast(p.birth_datetime as date)
+  and m.measurement_date is not null
