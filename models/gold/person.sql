@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized = 'table',
+    )
+}}
+
 select
   p.person_id,
   p.gender_concept_id,

@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized = 'table',
+    )
+}}
+
 select
   de.drug_exposure_id,
   de.person_id,

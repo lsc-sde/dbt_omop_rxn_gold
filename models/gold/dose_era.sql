@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized = 'table',
+    )
+}}
+
 select
   de.dose_era_id,
   de.person_id,

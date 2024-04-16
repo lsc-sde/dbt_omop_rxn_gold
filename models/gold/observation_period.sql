@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized = 'table',
+    )
+}}
+
 {# Placeholder logic to allow ATLAS to work
 https://stackoverflow.com/questions/48425120/merge-overlapping-dates-in-sql-server
 #}

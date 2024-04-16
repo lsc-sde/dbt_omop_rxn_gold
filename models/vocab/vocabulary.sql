@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized = 'table',
+    )
+}}
+
 select
   v.vocabulary_id,
   v.vocabulary_name,

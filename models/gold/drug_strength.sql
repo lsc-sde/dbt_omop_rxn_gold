@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized = 'table',
+    )
+}}
+
 select
   ds.drug_concept_id,
   ds.ingredient_concept_id,

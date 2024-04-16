@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized = 'table',
+    )
+}}
+
 select
   cs.cdm_source_name,
   cs.cdm_source_abbreviation,

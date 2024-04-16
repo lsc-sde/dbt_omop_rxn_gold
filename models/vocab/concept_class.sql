@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized = 'table',
+    )
+}}
+
 select
   cc.concept_class_id,
   cc.concept_class_name,

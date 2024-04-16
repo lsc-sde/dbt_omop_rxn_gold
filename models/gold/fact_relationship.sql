@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized = 'table',
+    )
+}}
+
 select
   fr.domain_concept_id_1,
   fr.fact_id_1,

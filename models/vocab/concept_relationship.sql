@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized = 'table',
+    )
+}}
+
 select
   cr.concept_id_1,
   cr.concept_id_2,

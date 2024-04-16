@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized = 'table',
+    )
+}}
+
 select
   po.procedure_occurrence_id,
   po.person_id,

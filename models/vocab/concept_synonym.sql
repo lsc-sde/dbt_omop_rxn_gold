@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized = 'table',
+    )
+}}
+
 select
   cs.concept_id,
   cs.concept_synonym_name,

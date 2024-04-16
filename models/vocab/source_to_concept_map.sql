@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized = 'table',
+    )
+}}
+
 select
   stcm.source_code,
   stcm.source_concept_id,

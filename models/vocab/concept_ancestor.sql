@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized = 'table',
+    )
+}}
+
 select
   ca.ancestor_concept_id,
   ca.descendant_concept_id,

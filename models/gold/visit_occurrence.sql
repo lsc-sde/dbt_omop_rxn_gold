@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized = 'table',
+    )
+}}
+
 select
   vo.visit_occurrence_id,
   vo.person_id,
