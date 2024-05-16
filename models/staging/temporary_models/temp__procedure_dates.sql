@@ -1,4 +1,4 @@
-  {{ get_observation_period ('measurement', 'measurement_date', 'measurement_date') }}
+  {{ get_observation_period ('procedure_occurrence', 'procedure_date', 'procedure_date') }}
 
 select
   person_id,
