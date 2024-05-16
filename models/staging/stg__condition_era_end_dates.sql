@@ -5,75 +5,75 @@
     )
 }}
 
-SELECT
-  PERSON_ID,
-  CONDITION_CONCEPT_ID,
-  DATEADD(DAY, -30, EVENT_DATE) AS END_DATE -- unpad the end date
-FROM (
-  SELECT
+select
+  E.PERSON_ID,
+  E.CONDITION_CONCEPT_ID,
+  DATEADD(day, -30, E.EVENT_DATE) as END_DATE -- unpad the end date
+from (
+  select
     E1.PERSON_ID,
     E1.CONDITION_CONCEPT_ID,
     E1.EVENT_DATE,
-    COALESCE(E1.START_ORDINAL, MAX(E2.START_ORDINAL)) AS START_ORDINAL,
+    coalesce(E1.START_ORDINAL, MAX(E2.START_ORDINAL)) as START_ORDINAL,
     E1.OVERALL_ORD
-  FROM (
-    SELECT
+  from (
+    select
       PERSON_ID,
       CONDITION_CONCEPT_ID,
       EVENT_DATE,
       EVENT_TYPE,
       START_ORDINAL,
-      ROW_NUMBER() OVER (
-        PARTITION BY PERSON_ID,
-        CONDITION_CONCEPT_ID ORDER BY
+      row_number() over (
+        partition by PERSON_ID,
+        CONDITION_CONCEPT_ID order by
           EVENT_DATE,
           EVENT_TYPE
-      ) AS OVERALL_ORD -- this re-numbers the inner UNION so all rows are numbered ordered by the event date
-    FROM (
+      ) as OVERALL_ORD -- this re-numbers the inner UNION so all rows are numbered ordered by the event date
+    from (
       -- select the start dates, assigning a row number to each
-      SELECT
+      select
         PERSON_ID,
         CONDITION_CONCEPT_ID,
-        CONDITION_START_DATE AS EVENT_DATE,
-        -1 AS EVENT_TYPE,
-        ROW_NUMBER() OVER (
-          PARTITION BY PERSON_ID,
-          CONDITION_CONCEPT_ID ORDER BY CONDITION_START_DATE
-        ) AS START_ORDINAL
-      FROM {{ ref('stg__condition_era_target') }}
+        CONDITION_START_DATE as EVENT_DATE,
+        -1 as EVENT_TYPE,
+        row_number() over (
+          partition by PERSON_ID,
+          CONDITION_CONCEPT_ID order by CONDITION_START_DATE
+        ) as START_ORDINAL
+      from {{ ref('stg__condition_era_target') }}
 
-      UNION ALL
+      union all
 
       -- pad the end dates by 30 to allow a grace period for overlapping ranges.
-      SELECT
+      select
         PERSON_ID,
         CONDITION_CONCEPT_ID,
-        DATEADD(DAY, 30, CONDITION_END_DATE),
-        1 AS EVENT_TYPE,
+        DATEADD(day, 30, CONDITION_END_DATE),
+        1 as EVENT_TYPE,
         NULL
-      FROM {{ ref('stg__condition_era_target') }}
-    ) AS RAWDATA
-  ) AS E1
-  INNER JOIN (
-    SELECT
+      from {{ ref('stg__condition_era_target') }}
+    ) as RAWDATA
+  ) as E1
+  inner join (
+    select
       PERSON_ID,
       CONDITION_CONCEPT_ID,
-      CONDITION_START_DATE AS EVENT_DATE,
-      ROW_NUMBER() OVER (
-        PARTITION BY PERSON_ID,
-        CONDITION_CONCEPT_ID ORDER BY CONDITION_START_DATE
-      ) AS START_ORDINAL
-    FROM {{ ref('stg__condition_era_target') }}
-  ) AS E2
-    ON
+      CONDITION_START_DATE as EVENT_DATE,
+      row_number() over (
+        partition by PERSON_ID,
+        CONDITION_CONCEPT_ID order by CONDITION_START_DATE
+      ) as START_ORDINAL
+    from {{ ref('stg__condition_era_target') }}
+  ) as E2
+    on
       E1.PERSON_ID = E2.PERSON_ID
-      AND E1.CONDITION_CONCEPT_ID = E2.CONDITION_CONCEPT_ID
-      AND E2.EVENT_DATE <= E1.EVENT_DATE
-  GROUP BY
+      and E1.CONDITION_CONCEPT_ID = E2.CONDITION_CONCEPT_ID
+      and E1.EVENT_DATE >= E2.EVENT_DATE
+  group by
     E1.PERSON_ID,
     E1.CONDITION_CONCEPT_ID,
     E1.EVENT_DATE,
     E1.START_ORDINAL,
     E1.OVERALL_ORD
-) AS E
-WHERE (2 * E.START_ORDINAL) - E.OVERALL_ORD = 0
+) as E
+where (2 * E.START_ORDINAL) - E.OVERALL_ORD = 0

@@ -5,7 +5,7 @@
     )
 }}
 
-SELECT
+select
   cast(row_number() over (
     order by person_id
   ) as bigint) as condition_era_id,
