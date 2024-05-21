@@ -19,3 +19,5 @@ inner join {{ ref('stg__person') }} as p
   on sp.person_id = p.person_id
 where
   sp.specimen_date >= cast(p.birth_datetime as date)
+  and
+  sp.specimen_date >= '{{ var("minimum_observation_period_start_date") }}'

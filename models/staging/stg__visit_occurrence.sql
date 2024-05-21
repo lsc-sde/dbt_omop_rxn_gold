@@ -81,3 +81,5 @@ where
   and vo.visit_end_date <= {{ dbt.current_timestamp() }}
   and vo.visit_end_datetime <= {{ dbt.current_timestamp() }}
   and vo.visit_concept_id is not null
+  and vo.visit_start_date
+  >= '{{ var("minimum_observation_period_start_date") }}'

@@ -29,4 +29,7 @@ where
   and co.condition_concept_id is not null
   and co.condition_start_date >= cast(p.birth_datetime as date)
   and co.condition_start_date <= {{ dbt.current_timestamp() }}
--- ToDo: Add a clause to exclude events after death
+  -- ToDo: Add a clause to exclude events after death
+  and
+  co.condition_start_date
+  >= '{{ var("minimum_observation_period_start_date") }}'

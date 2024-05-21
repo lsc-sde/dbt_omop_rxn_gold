@@ -11,3 +11,5 @@ inner join {{ ref('stg__person') }} as p
   on de.person_id = p.person_id
 where
   de.drug_era_start_date >= cast(p.birth_datetime as date)
+  and
+  de.drug_era_start_date >= '{{ var("minimum_observation_period_start_date") }}'

@@ -35,3 +35,5 @@ inner join {{ source('vocab', 'concept') }} as c
 where
   o.observation_date >= cast(p.birth_datetime as date)
   and o.observation_date is not null
+  and
+  o.observation_date >= '{{ var("minimum_observation_period_start_date") }}'

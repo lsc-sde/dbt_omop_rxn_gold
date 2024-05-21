@@ -30,3 +30,6 @@ inner join {{ ref('stg__visit_occurrence') }} as vo
 where
   de.drug_exposure_start_date >= cast(p.birth_datetime as date)
   and de.drug_exposure_start_date is not null
+  and
+  de.drug_exposure_start_date
+  >= '{{ var("minimum_observation_period_start_date") }}'

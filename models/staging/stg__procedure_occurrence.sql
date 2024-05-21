@@ -23,3 +23,5 @@ inner join {{ ref('stg__visit_occurrence') }} as vo
 where
   po.procedure_date >= cast(p.birth_datetime as date)
   and po.procedure_date is not null
+  and
+  po.procedure_date >= '{{ var("minimum_observation_period_start_date") }}'
