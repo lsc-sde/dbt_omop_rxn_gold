@@ -19,6 +19,8 @@ with spans as (
   select * from {{ ref('temp__device_dates') }}
   union
   select * from {{ ref('temp__drug_dates') }}
+  union
+  select * from {{ ref('temp__specimen_dates') }}
 ),
 
 observation_period as (

@@ -49,6 +49,11 @@ from
     from {{ source('omop', 'visit_occurrence') }}
     where
       visit_start_date >= '{{ var("minimum_observation_period_start_date") }}'
+    union
+    select person_id
+    from {{ source('omop', 'specimen') }}
+    where
+      specimen_date >= '{{ var("minimum_observation_period_start_date") }}'
 
   ) as t
 
