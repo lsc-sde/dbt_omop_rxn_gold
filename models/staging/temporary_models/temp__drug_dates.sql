@@ -1,4 +1,4 @@
-  {{ get_observation_period ('stg__drug_exposure', 'drug_exposure_start_date', 'drug_exposure_start_date') }}
+  {{ get_observation_period ('drug_exposure', 'drug_exposure_start_date', 'drug_exposure_start_date') }}
 
 select
   person_id,

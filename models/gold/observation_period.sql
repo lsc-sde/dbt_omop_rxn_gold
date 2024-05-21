@@ -21,5 +21,5 @@ select
   observation_period_end_date,
   32817 as period_type_concept_id,
   row_number() over (order by person_id) as observation_period_id
-from {{ ref("temp__observation_dates") }}
+from {{ ref("temp__observation_period_dates") }}
 --noqa
