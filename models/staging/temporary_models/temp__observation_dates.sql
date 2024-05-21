@@ -13,6 +13,8 @@ with spans as (
   --select * from gold.temp__measurement_dates
   union
   select * from {{ ref('temp__procedure_dates') }}
+  union
+  select * from {{ ref('temp__drug_dates') }}
 ),
 
 observation_period as (
