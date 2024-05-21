@@ -60,3 +60,5 @@ sources:
   dbt_omop_rxn_gold:
     +docs:
       node_color: "#FFA600"
+
+on-run-end: "{{ remove_pts() }}"
