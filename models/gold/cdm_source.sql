@@ -5,8 +5,8 @@
 }}
 
 select
-  cs.cdm_source_name,
-  cs.cdm_source_abbreviation,
+  'IDRIL' as cdm_source_name,
+  'IDRIL' as cdm_source_abbreviation,
   cs.cdm_holder,
   cs.source_description,
   cs.source_documentation_reference,
