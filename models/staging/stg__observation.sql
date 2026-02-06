@@ -37,8 +37,8 @@ where
   and o.observation_date is not null
   and
   o.observation_date >= '{{ var("minimum_observation_period_start_date") }}'
-   and m.datasource <> 'swl'
-  union
+   and o.datasource <> 'swl'
+union
   select
   o.observation_id,
   o.person_id,
@@ -78,4 +78,4 @@ where
   and o.observation_date is not null
   and
   o.observation_date >= '{{ var("minimum_observation_period_start_date") }}'
-   and m.datasource = 'swl'
+   and o.datasource = 'swl'
